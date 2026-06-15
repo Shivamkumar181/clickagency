@@ -39,7 +39,7 @@ const ContactForm = () => {
         phone: formData.phone,
         budget: formData.budget || "Not specified",
         service: formData.service || "Not specified",
-        to_email: "hello@ztoh.com", // Change to your email
+        to_email: "clickcontact00@gmail.com",
       };
 
       const result = await emailjs.send(
@@ -62,7 +62,7 @@ const ContactForm = () => {
       }
     } catch (error) {
       console.error("EmailJS Error:", error);
-      setError("Failed to send message. Please email directly: hello@ztoh.com");
+      setError("Failed to send message. Please email directly- clickcontact00@gmail.com");
     } finally {
       setLoading(false);
     }
