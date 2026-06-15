@@ -1,0 +1,36 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&display=swap');
+
+/* Apply fonts globally */
+* {
+  font-family: 'Inter', 'Open Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* Headings get Poppins font */
+h1, h2,
+.h1, .h2 {
+  font-family: 'Poppins', 'Montserrat', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* Accent text for special elements */
+.accent-text,
+.quote,
+.testimonial {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Custom font weight classes */
+.font-light { font-weight: 200; }
+.font-regular { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 400; }
+.font-bold { font-weight: 500; }
+.font-extrabold { font-weight: 600; }
+
+/* Responsive font adjustments */
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+}

@@ -1,0 +1,38 @@
+@import './styles/fonts.css';
+@import "tailwindcss";
+
+
+@theme {
+  --color-primary: #FACC15;
+  --color-dark: #000000;
+  --color-light: #FFFFFF;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-black text-white;
+  }
+}
+
+@layer components {
+  .yellow-glow {
+    @apply transition-all duration-300;
+  }
+  .yellow-glow:hover {
+    box-shadow: 0 0 15px rgba(250, 204, 21, 0.4);
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #FACC15;
+    border-radius: 10px;
+  }
+}
