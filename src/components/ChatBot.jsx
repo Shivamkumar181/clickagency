@@ -936,7 +936,7 @@ const ChatBot = () => {
       setMessages((prev) => [
         ...prev,
         {
-          text: "Please share your email and phone number so Shivam can personally get in touch with you! 📞",
+          text: "Please share your email and phone number so Shivam can personally get in touch with you!",
           sender: "bot",
         },
       ]);
@@ -947,7 +947,7 @@ const ChatBot = () => {
       setMessages((prev) => [
         ...prev,
         {
-          text: "You've already shared your details! Shivam will reach out soon. For urgent queries, WhatsApp at +91 98765 43210",
+          text: "You've already shared your details! Shivam will reach out soon. For urgent queries, email clickcontact00@gmail.com",
           sender: "bot",
         },
       ]);
