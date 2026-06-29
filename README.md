@@ -1,16 +1,63 @@
-# React + Vite
+# Digital Marketing Agency Website (Clickagency)
+# Overview
+Clickagency is a digital marketing agency website that showcases services, generates leads, and engages visitors through an AI chatbot.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Design & UI
+- Black, White, Yellow color scheme
+- Fully responsive (mobile, tablet, desktop)
+- Animated service cards with hover effects
+- Interactive image hover (B&W to Color)
+- Smooth page transitions
 
-Currently, two official plugins are available:
+# Page Sections
+Home	Hero, 6 Services Cards, Our Promise, Why zTOh?, FAQ Carousel, Testimonials, Contact Form, AI Chatbot
+About	Who We Are, Hover Image, Stats (Projects, Clients, Team, ROI)
+Services	6 Service Cards → Click to Detail Page with Pricing
+Resources	Success Stories, Team Profile, Careers
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# AI Automation
+- Floating AI Chatbot on all pages
+- Guides conversations toward lead qualification
+- Captures visitor email + phone
+- Sends conversation summary to email via EmailJS
+- Contact form with budget + service dropdowns
+- WhatsApp pre-filled message link
 
-## React Compiler
+# Tech Stack
+- Framework	React 18
+- Build Tool	Vite
+- Styling	Tailwind CSS
+- Icons	Lucide React
+- Email Service	EmailJS
+- AI Chatbot	Custom React component (AI Agent pattern)
+- Version Control	Git + GitHub
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Installation
+- Prerequisites
+- Node.js (v16+)
+- npm or yarn
+- EmailJS account (free)
 
-## Expanding the ESLint configuration
+- Clone the repository
+- git clone
+- Install dependencies
+- npm install
+- Create .env file
+VITE_EMAILJS_SERVICE_ID=your_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_public_key
+VITE_WHATSAPP_NUMBER=+91XXXXXXXXXX
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Start development server
+- npm run dev
+
+- Build for production
+- npm run build
+
+# Responsive Breakpoints
+- Device	Breakpoint
+- Mobile	< 640px
+- Tablet	640px - 1024px
+- Desktop	> 1024px
+
+# Demo Link - https://clickagency.vercel.app/
