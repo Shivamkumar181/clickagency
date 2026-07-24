@@ -364,6 +364,7 @@
 // export default Home;
 
 
+
 import React, { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ServiceCard from "../components/ServiceCard";
@@ -389,22 +390,23 @@ import {
   Sparkles,
   Target,
   Brain,
-  Network,
-  Cpu,
   CheckCircle2,
   ArrowRight,
   Play,
-  Layers,
-  LineChart,
-  Smartphone,
-  CreditCard,
   MessageCircle,
   Send,
-  X,
   ChevronDown,
   Headphones,
   ThumbsUp,
   Clock as ClockIcon,
+  Star,
+  MessageSquare,
+  Circle,
+  Check,
+  X,
+  Phone,
+  Mail,
+  User,
 } from "lucide-react";
 
 const services = [
@@ -541,187 +543,199 @@ const testimonials = [
   },
 ];
 
-// AI Chat Preview Component
-const AIChatPreview = ({ onStartTrial }) => {
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      type: "bot",
-      text: "👋 Hi there! I'm your AI assistant. How can I help you today?",
-      time: "10:30 AM",
-    },
-    {
-      id: 2,
-      type: "user",
-      text: "Do you offer cash on delivery?",
-      time: "10:31 AM",
-    },
-    {
-      id: 3,
-      type: "bot",
-      text: "Yes, Cash On Delivery is available! We offer multiple payment options for your convenience.",
-      time: "10:31 AM",
-    },
-  ]);
-  
-  const [inputValue, setInputValue] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef(null);
+// Stylish Chat Preview Card Component
+const ChatPreviewCard = ({ onStartTrial }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const messages = [
+    { type: "user", text: "Do you offer cash on delivery?" },
+    { type: "agent", text: "yes, Cash On Delivery is available." },
+  ];
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    const interval = setInterval(() => {
+      setCurrentMessageIndex((prev) => (prev + 1) % messages.length);
+      setIsVisible(false);
+      setTimeout(() => setIsVisible(true), 100);
+    }, 3000);
 
-  const handleSendMessage = (e) => {
-    e.preventDefault();
-    if (!inputValue.trim()) return;
-
-    const newMessage = {
-      id: messages.length + 1,
-      type: "user",
-      text: inputValue,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
-
-    setMessages([...messages, newMessage]);
-    setInputValue("");
-    setIsTyping(true);
-
-    // Simulate bot response
-    setTimeout(() => {
-      const botResponses = [
-        "That's a great question! Let me help you with that.",
-        "I understand. Here's what I can do for you.",
-        "Thanks for asking! I'll provide the best solution.",
-        "Let me check that for you right away.",
-      ];
-      
-      const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
-      
-      const botMessage = {
-        id: messages.length + 2,
-        type: "bot",
-        text: randomResponse,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      };
-      
-      setMessages((prev) => [...prev, botMessage]);
-      setIsTyping(false);
-    }, 1500);
-  };
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 to-black border border-yellow-400/20 rounded-2xl overflow-hidden shadow-2xl shadow-yellow-400/5">
-      {/* Chat Header */}
-      <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-500/10 p-4 border-b border-yellow-400/20">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center">
-                <Bot className="w-5 h-5 text-black" />
+    <motion.div
+      className="relative w-full max-w-md mx-auto"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.3 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Glow Effect */}
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-400/20 to-yellow-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      {/* Main Card */}
+      <div className="relative bg-gradient-to-br from-gray-900/95 to-black/95 border border-yellow-400/20 rounded-2xl overflow-hidden shadow-2xl shadow-yellow-400/5 backdrop-blur-sm">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-yellow-400/15 to-yellow-500/5 px-5 py-4 border-b border-yellow-400/10">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <div className="w-11 h-11 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-400/20">
+                  <MessageCircle className="w-5 h-5 text-black" />
+                </div>
+                <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-400 rounded-full border-2 border-gray-900 animate-pulse" />
               </div>
-              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-black"></div>
+              <div>
+                <h3 className="text-white font-semibold text-sm">Live Chat Preview</h3>
+                <p className="text-yellow-400/60 text-xs flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block animate-pulse" />
+                  Online • Usually replies instantly
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 bg-yellow-400/30 rounded-full hover:bg-yellow-400/50 transition-colors cursor-pointer" />
+              <div className="w-2 h-2 bg-yellow-400/30 rounded-full hover:bg-yellow-400/50 transition-colors cursor-pointer" />
+              <div className="w-2 h-2 bg-yellow-400/30 rounded-full hover:bg-yellow-400/50 transition-colors cursor-pointer" />
+            </div>
+          </div>
+        </div>
+
+        {/* Chat Area */}
+        <div className="p-5 space-y-4 min-h-[180px]">
+          {/* Agent Info */}
+          <motion.div
+            className="flex items-center gap-2.5 bg-yellow-400/5 border border-yellow-400/10 rounded-xl p-2.5"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center flex-shrink-0">
+              <Bot className="w-4 h-4 text-black" />
             </div>
             <div>
-              <h3 className="text-white font-semibold text-sm">AI Customer Support</h3>
-              <p className="text-yellow-400/70 text-xs flex items-center gap-1">
-                <span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block"></span>
-                Online • 24/7 Available
-              </p>
+              <p className="text-white text-xs font-medium">AI Support Agent</p>
+              <p className="text-yellow-400/50 text-[10px]">Online • 24/7</p>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="flex -space-x-1">
-              <div className="w-6 h-6 rounded-full bg-yellow-400/20 border border-yellow-400/30 flex items-center justify-center">
-                <ThumbsUp className="w-3 h-3 text-yellow-400" />
-              </div>
-              <div className="w-6 h-6 rounded-full bg-yellow-400/20 border border-yellow-400/30 flex items-center justify-center">
-                <Headphones className="w-3 h-3 text-yellow-400" />
-              </div>
+            <div className="ml-auto flex gap-1">
+              <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+              <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+              <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+              <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+              <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
             </div>
+          </motion.div>
+
+          {/* Messages */}
+          <div className="space-y-3">
+            {/* User Message */}
+            <motion.div
+              className="flex justify-end"
+              initial={{ opacity: 0, scale: 0.95, x: 10 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <div className="bg-yellow-400/10 border border-yellow-400/20 rounded-2xl rounded-br-md px-4 py-2.5 max-w-[80%]">
+                <p className="text-gray-200 text-sm">Do you offer cash on delivery?</p>
+                <span className="text-[10px] text-gray-500 mt-1 block">10:30 AM</span>
+              </div>
+            </motion.div>
+
+            {/* Agent Response with Animation */}
+            <motion.div
+              className="flex justify-start"
+              initial={{ opacity: 0, scale: 0.95, x: -10 }}
+              animate={{ 
+                opacity: isVisible ? 1 : 0.5,
+                scale: isVisible ? 1 : 0.98,
+                x: 0 
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-500/10 border border-yellow-400/30 rounded-2xl rounded-bl-md px-4 py-2.5 max-w-[80%] shadow-lg shadow-yellow-400/5">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-5 h-5 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <Check className="w-3 h-3 text-black" />
+                  </div>
+                  <span className="text-yellow-400 text-xs font-medium">AI Response</span>
+                </div>
+                <p className="text-white text-sm font-medium">
+                  yes, Cash On Delivery is available.
+                </p>
+                <span className="text-[10px] text-yellow-400/50 mt-1 block">10:31 AM</span>
+              </div>
+            </motion.div>
+
+            {/* Typing Indicator */}
+            <motion.div
+              className="flex justify-start"
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <div className="bg-gray-800/50 border border-gray-700/30 rounded-2xl rounded-bl-md px-4 py-2.5">
+                <div className="flex gap-1">
+                  <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
-      </div>
 
-      {/* Chat Messages */}
-      <div className="h-72 overflow-y-auto p-4 space-y-3 bg-black/30">
-        {messages.map((message) => (
-          <motion.div
-            key={message.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`max-w-[80%] rounded-2xl px-4 py-2.5 ${
-                message.type === "user"
-                  ? "bg-yellow-400 text-black"
-                  : "bg-gray-800/80 text-white border border-gray-700/50"
-              }`}
-            >
-              <p className="text-sm">{message.text}</p>
-              <span className={`text-[10px] mt-1 block ${
-                message.type === "user" ? "text-black/60" : "text-gray-400"
-              }`}>
-                {message.time}
-              </span>
-            </div>
-          </motion.div>
-        ))}
-        
-        {isTyping && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex justify-start"
-          >
-            <div className="bg-gray-800/80 text-white border border-gray-700/50 rounded-2xl px-4 py-2.5">
-              <div className="flex gap-1">
-                <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
-              </div>
-            </div>
-          </motion.div>
-        )}
-        
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Chat Input */}
-      <form onSubmit={handleSendMessage} className="p-3 border-t border-yellow-400/10 bg-black/50">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Type your message..."
-            className="flex-1 bg-gray-800/50 text-white text-sm rounded-lg px-4 py-2.5 border border-yellow-400/20 focus:border-yellow-400/50 focus:outline-none transition-colors"
-          />
-          <button
-            type="submit"
-            className="bg-yellow-400 hover:bg-yellow-500 text-black p-2.5 rounded-lg transition-colors"
-          >
-            <Send className="w-4 h-4" />
+        {/* Quick Actions */}
+        <div className="px-5 pb-3 grid grid-cols-3 gap-2">
+          <button className="bg-yellow-400/5 hover:bg-yellow-400/10 border border-yellow-400/10 rounded-lg px-3 py-1.5 text-[10px] text-yellow-400/70 hover:text-yellow-400 transition-all duration-300 flex items-center justify-center gap-1.5">
+            <Phone className="w-3 h-3" />
+            Call
+          </button>
+          <button className="bg-yellow-400/5 hover:bg-yellow-400/10 border border-yellow-400/10 rounded-lg px-3 py-1.5 text-[10px] text-yellow-400/70 hover:text-yellow-400 transition-all duration-300 flex items-center justify-center gap-1.5">
+            <Mail className="w-3 h-3" />
+            Email
+          </button>
+          <button className="bg-yellow-400/5 hover:bg-yellow-400/10 border border-yellow-400/10 rounded-lg px-3 py-1.5 text-[10px] text-yellow-400/70 hover:text-yellow-400 transition-all duration-300 flex items-center justify-center gap-1.5">
+            <User className="w-3 h-3" />
+            Agent
           </button>
         </div>
-      </form>
 
-      {/* CTA Button */}
-      <div className="p-3 bg-gradient-to-r from-yellow-400/10 to-transparent border-t border-yellow-400/10">
-        <button
-          onClick={onStartTrial}
-          className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold py-2.5 rounded-lg hover:shadow-lg hover:shadow-yellow-400/25 transition-all duration-300 flex items-center justify-center gap-2 text-sm"
-        >
-          <Rocket className="w-4 h-4" />
-          Start Free Trial - AI Support
-        </button>
+        {/* CTA Button */}
+        <div className="p-3 bg-gradient-to-r from-yellow-400/5 to-transparent border-t border-yellow-400/10">
+          <motion.button
+            onClick={onStartTrial}
+            className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold py-2.5 rounded-xl hover:shadow-lg hover:shadow-yellow-400/30 transition-all duration-300 flex items-center justify-center gap-2 text-sm group"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <MessageSquare className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+            <span>Start Free Trial - AI Support</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </motion.button>
+        </div>
+
+        {/* Decorative Elements */}
+        <div className="absolute -top-12 -right-12 w-24 h-24 bg-yellow-400/5 rounded-full blur-2xl" />
+        <div className="absolute -bottom-12 -left-12 w-24 h-24 bg-yellow-400/5 rounded-full blur-2xl" />
       </div>
-    </div>
+
+      {/* Floating Badge */}
+      <motion.div
+        className="absolute -top-3 -right-3 bg-yellow-400 text-black text-[10px] font-bold px-3 py-1 rounded-full shadow-lg shadow-yellow-400/20"
+        animate={{ 
+          scale: [1, 1.05, 1],
+          rotate: [0, -2, 2, 0]
+        }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        <div className="flex items-center gap-1.5">
+          <Sparkles className="w-3 h-3" />
+          24/7 Support
+        </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
@@ -763,9 +777,9 @@ const Home = () => {
 
         {/* Content Container */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start lg:items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Column - Text Content */}
-            <div className="text-center lg:text-left">
+            <div className="text-center lg:text-left order-2 lg:order-1">
               {/* Badge */}
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
@@ -795,7 +809,7 @@ const Home = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="text-base sm:text-lg text-gray-300 mb-6 max-w-lg lg:max-w-md"
+                className="text-base sm:text-lg text-gray-300 mb-6 max-w-lg lg:max-w-md mx-auto lg:mx-0"
               >
                 Automate campaigns, optimize ad spend, and scale your business 
                 with intelligent AI-driven marketing solutions.
@@ -867,23 +881,10 @@ const Home = () => {
               </motion.div>
             </div>
 
-            {/* Right Column - AI Chat Preview */}
-            <motion.div
-              initial={{ x: 30, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="w-full max-w-md mx-auto lg:mx-0 lg:ml-auto"
-            >
-              <AIChatPreview onStartTrial={handleStartTrial} />
-              
-              {/* Feature Highlight */}
-              <div className="mt-4 text-center lg:text-right">
-                <p className="text-xs text-gray-400 flex items-center justify-center lg:justify-end gap-2">
-                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block animate-pulse"></span>
-                  Boost customer retention by 45% with AI Support
-                </p>
-              </div>
-            </motion.div>
+            {/* Right Column - Chat Preview */}
+            <div className="order-1 lg:order-2 flex justify-center">
+              <ChatPreviewCard onStartTrial={handleStartTrial} />
+            </div>
           </div>
         </div>
 
