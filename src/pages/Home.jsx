@@ -364,9 +364,8 @@
 // export default Home;
 
 
-
-import React, { useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useRef, useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import ServiceCard from "../components/ServiceCard";
 import ContactForm from "../components/ContactForm";
 import SEO from "../components/SEO";
@@ -399,6 +398,13 @@ import {
   LineChart,
   Smartphone,
   CreditCard,
+  MessageCircle,
+  Send,
+  X,
+  ChevronDown,
+  Headphones,
+  ThumbsUp,
+  Clock as ClockIcon,
 } from "lucide-react";
 
 const services = [
@@ -535,7 +541,196 @@ const testimonials = [
   },
 ];
 
+// AI Chat Preview Component
+const AIChatPreview = ({ onStartTrial }) => {
+  const [messages, setMessages] = useState([
+    {
+      id: 1,
+      type: "bot",
+      text: "👋 Hi there! I'm your AI assistant. How can I help you today?",
+      time: "10:30 AM",
+    },
+    {
+      id: 2,
+      type: "user",
+      text: "Do you offer cash on delivery?",
+      time: "10:31 AM",
+    },
+    {
+      id: 3,
+      type: "bot",
+      text: "Yes, Cash On Delivery is available! We offer multiple payment options for your convenience.",
+      time: "10:31 AM",
+    },
+  ]);
+  
+  const [inputValue, setInputValue] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (!inputValue.trim()) return;
+
+    const newMessage = {
+      id: messages.length + 1,
+      type: "user",
+      text: inputValue,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    setMessages([...messages, newMessage]);
+    setInputValue("");
+    setIsTyping(true);
+
+    // Simulate bot response
+    setTimeout(() => {
+      const botResponses = [
+        "That's a great question! Let me help you with that.",
+        "I understand. Here's what I can do for you.",
+        "Thanks for asking! I'll provide the best solution.",
+        "Let me check that for you right away.",
+      ];
+      
+      const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
+      
+      const botMessage = {
+        id: messages.length + 2,
+        type: "bot",
+        text: randomResponse,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      
+      setMessages((prev) => [...prev, botMessage]);
+      setIsTyping(false);
+    }, 1500);
+  };
+
+  return (
+    <div className="bg-gradient-to-br from-gray-900 to-black border border-yellow-400/20 rounded-2xl overflow-hidden shadow-2xl shadow-yellow-400/5">
+      {/* Chat Header */}
+      <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-500/10 p-4 border-b border-yellow-400/20">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center">
+                <Bot className="w-5 h-5 text-black" />
+              </div>
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-black"></div>
+            </div>
+            <div>
+              <h3 className="text-white font-semibold text-sm">AI Customer Support</h3>
+              <p className="text-yellow-400/70 text-xs flex items-center gap-1">
+                <span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block"></span>
+                Online • 24/7 Available
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex -space-x-1">
+              <div className="w-6 h-6 rounded-full bg-yellow-400/20 border border-yellow-400/30 flex items-center justify-center">
+                <ThumbsUp className="w-3 h-3 text-yellow-400" />
+              </div>
+              <div className="w-6 h-6 rounded-full bg-yellow-400/20 border border-yellow-400/30 flex items-center justify-center">
+                <Headphones className="w-3 h-3 text-yellow-400" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Chat Messages */}
+      <div className="h-72 overflow-y-auto p-4 space-y-3 bg-black/30">
+        {messages.map((message) => (
+          <motion.div
+            key={message.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
+          >
+            <div
+              className={`max-w-[80%] rounded-2xl px-4 py-2.5 ${
+                message.type === "user"
+                  ? "bg-yellow-400 text-black"
+                  : "bg-gray-800/80 text-white border border-gray-700/50"
+              }`}
+            >
+              <p className="text-sm">{message.text}</p>
+              <span className={`text-[10px] mt-1 block ${
+                message.type === "user" ? "text-black/60" : "text-gray-400"
+              }`}>
+                {message.time}
+              </span>
+            </div>
+          </motion.div>
+        ))}
+        
+        {isTyping && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex justify-start"
+          >
+            <div className="bg-gray-800/80 text-white border border-gray-700/50 rounded-2xl px-4 py-2.5">
+              <div className="flex gap-1">
+                <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+        
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Chat Input */}
+      <form onSubmit={handleSendMessage} className="p-3 border-t border-yellow-400/10 bg-black/50">
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Type your message..."
+            className="flex-1 bg-gray-800/50 text-white text-sm rounded-lg px-4 py-2.5 border border-yellow-400/20 focus:border-yellow-400/50 focus:outline-none transition-colors"
+          />
+          <button
+            type="submit"
+            className="bg-yellow-400 hover:bg-yellow-500 text-black p-2.5 rounded-lg transition-colors"
+          >
+            <Send className="w-4 h-4" />
+          </button>
+        </div>
+      </form>
+
+      {/* CTA Button */}
+      <div className="p-3 bg-gradient-to-r from-yellow-400/10 to-transparent border-t border-yellow-400/10">
+        <button
+          onClick={onStartTrial}
+          className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold py-2.5 rounded-lg hover:shadow-lg hover:shadow-yellow-400/25 transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+        >
+          <Rocket className="w-4 h-4" />
+          Start Free Trial - AI Support
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const Home = () => {
+  const handleStartTrial = () => {
+    // Replace with your actual AI Customer Support link
+    window.open('https://your-ai-chatbot-system.com/trial', '_blank');
+  };
+
   return (
     <>
       <SEO
@@ -546,7 +741,7 @@ const Home = () => {
         type="website"
       />
       
-      {/* Hero Section - Professional & Clean */}
+      {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-black">
         {/* Subtle Background Pattern */}
         <div className="absolute inset-0 opacity-5">
@@ -568,7 +763,7 @@ const Home = () => {
 
         {/* Content Container */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start lg:items-center">
             {/* Left Column - Text Content */}
             <div className="text-center lg:text-left">
               {/* Badge */}
@@ -633,13 +828,14 @@ const Home = () => {
                 transition={{ delay: 0.4 }}
                 className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
               >
-                <a
-                  href="#contact-form-section"
+                <button
+                  onClick={handleStartTrial}
                   className="group inline-flex items-center justify-center px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-yellow-400/25"
                 >
+                  <MessageCircle className="w-4 h-4 mr-2" />
                   <span>Start Free Trial</span>
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </a>
+                </button>
                 <a
                   href="#services"
                   className="inline-flex items-center justify-center px-6 py-3 border border-yellow-400/30 hover:border-yellow-400 text-white font-semibold rounded-lg transition-all duration-300 hover:bg-yellow-400/10"
@@ -661,8 +857,8 @@ const Home = () => {
                   <span>No Lock-in</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-yellow-400" />
-                  <span>24/7 Support</span>
+                  <ClockIcon className="w-4 h-4 text-yellow-400" />
+                  <span>24/7 AI Support</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Gauge className="w-4 h-4 text-yellow-400" />
@@ -671,99 +867,27 @@ const Home = () => {
               </motion.div>
             </div>
 
-            {/* Right Column - Visual Elements */}
+            {/* Right Column - AI Chat Preview */}
             <motion.div
               initial={{ x: 30, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="relative hidden lg:block"
+              className="w-full max-w-md mx-auto lg:mx-0 lg:ml-auto"
             >
-              <div className="relative">
-                {/* Main Card */}
-                <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 shadow-2xl">
-                  {/* Header */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-yellow-400/10 rounded-lg flex items-center justify-center">
-                        <Brain className="w-5 h-5 text-yellow-400" />
-                      </div>
-                      <div>
-                        <p className="text-white font-semibold text-sm">AI Dashboard</p>
-                        <p className="text-gray-400 text-xs">Live Performance</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-1">
-                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                      <div className="w-2 h-2 bg-yellow-400 rounded-full" />
-                      <div className="w-2 h-2 bg-red-400 rounded-full" />
-                    </div>
-                  </div>
-
-                  {/* Stats Grid */}
-                  <div className="grid grid-cols-3 gap-3 mb-4">
-                    {[
-                      { label: "ROI", value: "284%", change: "+12%" },
-                      { label: "Conversions", value: "1.2K", change: "+8%" },
-                      { label: "Ad Spend", value: "₹45K", change: "-5%" },
-                    ].map((stat, i) => (
-                      <div key={i} className="bg-black/30 rounded-lg p-3 text-center">
-                        <p className="text-xs text-gray-400">{stat.label}</p>
-                        <p className="text-lg font-bold text-white">{stat.value}</p>
-                        <p className={`text-xs ${stat.change.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
-                          {stat.change}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* AI Insights */}
-                  <div className="bg-yellow-400/5 border border-yellow-400/10 rounded-lg p-3 mb-4">
-                    <div className="flex items-start gap-2">
-                      <Sparkles className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-xs text-yellow-200 font-medium">AI Insight</p>
-                        <p className="text-xs text-gray-300">Optimize Facebook ads for better ROI by 23%</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-2">
-                    <button className="flex-1 bg-yellow-400 text-black text-xs font-semibold py-2 rounded-lg hover:bg-yellow-500 transition-colors">
-                      Run Campaign
-                    </button>
-                    <button className="flex-1 bg-gray-700/50 text-white text-xs font-semibold py-2 rounded-lg hover:bg-gray-700 transition-colors">
-                      View Analytics
-                    </button>
-                  </div>
-                </div>
-
-                {/* Floating Elements */}
-                <div className="absolute -top-6 -right-6 w-16 h-16 bg-yellow-400/10 rounded-full blur-xl animate-pulse" />
-                <div className="absolute -bottom-6 -left-6 w-20 h-20 bg-yellow-400/5 rounded-full blur-xl animate-pulse delay-500" />
-                
-                {/* Floating Icons */}
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                  className="absolute -top-10 -left-8 bg-gray-800/80 backdrop-blur-sm border border-gray-700/50 rounded-xl p-2 shadow-xl"
-                >
-                  <Target className="w-6 h-6 text-yellow-400" />
-                </motion.div>
-                
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-                  className="absolute -bottom-8 -right-6 bg-gray-800/80 backdrop-blur-sm border border-gray-700/50 rounded-xl p-2 shadow-xl"
-                >
-                  <LineChart className="w-6 h-6 text-yellow-400" />
-                </motion.div>
+              <AIChatPreview onStartTrial={handleStartTrial} />
+              
+              {/* Feature Highlight */}
+              <div className="mt-4 text-center lg:text-right">
+                <p className="text-xs text-gray-400 flex items-center justify-center lg:justify-end gap-2">
+                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block animate-pulse"></span>
+                  Boost customer retention by 45% with AI Support
+                </p>
               </div>
             </motion.div>
           </div>
         </div>
 
-        {/* Scroll Indicator - Mobile Friendly */}
+        {/* Scroll Indicator */}
         <motion.div
           className="absolute bottom-6 left-1/2 transform -translate-x-1/2"
           animate={{ y: [0, 8, 0] }}
@@ -773,22 +897,6 @@ const Home = () => {
             <div className="w-1 h-2.5 bg-yellow-400 rounded-full mt-1.5 animate-pulse" />
           </div>
         </motion.div>
-
-        {/* Mobile Stats - Visible only on small screens */}
-        <div className="lg:hidden absolute bottom-20 left-0 right-0 px-4">
-          <div className="grid grid-cols-3 gap-2 max-w-sm mx-auto bg-black/30 backdrop-blur-sm rounded-xl p-3 border border-white/10">
-            {[
-              { label: "ROI", value: "284%" },
-              { label: "Conversions", value: "1.2K" },
-              { label: "Ad Spend", value: "₹45K" },
-            ].map((stat, i) => (
-              <div key={i} className="text-center">
-                <p className="text-xs text-gray-400">{stat.label}</p>
-                <p className="text-sm font-bold text-white">{stat.value}</p>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* Promise Section */}
