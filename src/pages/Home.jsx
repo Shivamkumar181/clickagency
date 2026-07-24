@@ -641,16 +641,6 @@ const CurlyWires = () => {
         animate={{ pathLength: 1, opacity: 1 }}
         transition={{ duration: 2, delay: 0.5, ease: "easeInOut" }}
       />
-      <motion.path
-        d="M 25% 15% C 35% 5%, 45% 35%, 55% 25% C 65% 15%, 70% 50%, 80% 40% C 85% 35%, 75% 60%, 85% 70%"
-        stroke="url(#wireGradient1)"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 2, delay: 0.5, ease: "easeInOut" }}
-      />
 
       {/* Curly Wire 2 - Top Right to Bottom Left */}
       <motion.path
@@ -834,7 +824,7 @@ const Home = () => {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="font-['Inter'] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-[1.08] tracking-tight"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-[1.08] tracking-tight"
               >
                 <span className="text-white">Marketing</span>
                 <br />
@@ -848,7 +838,7 @@ const Home = () => {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="font-['Inter'] text-gray-400 text-sm sm:text-base mb-7 max-w-md mx-auto lg:mx-0 leading-relaxed"
+                className="text-gray-400 text-sm sm:text-base mb-7 max-w-md mx-auto lg:mx-0 leading-relaxed"
               >
                 Automate campaigns, optimize ad spend, and scale your business with intelligent AI solutions.
               </motion.p>
